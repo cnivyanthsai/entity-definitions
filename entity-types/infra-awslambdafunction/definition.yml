@@ -1,69 +1,28 @@
 domain: INFRA
 type: AWSLAMBDAFUNCTION
-goldenTags:
-- aws.awsRegion
-- aws.region
-- aws.accountId
-- aws.memorySize
-- aws.runtime
-- aws.timeout
-- aws.handler
-- account
-- label.Team
-- label.team
-- label.env
-- label.environment
-configuration:
-  entityExpirationTime: QUARTERLY
-  alertable: true
 
 synthesis:
   rules:
-    # Logs received via Lambda/Firehose log forwarder and enriched by the Logs Pipeline. See: https://docs.newrelic.com/docs/logs/logs-context/aws-logs-in-context/
-    # Logs from legacy API Polling entities not using the ARN to compute the entity.guid, but directly providing the entityId
-    - ruleName: infra_awslambdafunction_entityId
-      identifier: entityId
-      name: aws.lambda.FunctionName
-      encodeIdentifierInGUID: false
-      legacyFeatures:
-        overrideGuidType: true
-      conditions:
-        - attribute: eventType
-          prefix: Log
-        - attribute: aws.Arn
-          present: true
-        - attribute: aws.lambda.FunctionName
-          present: true
-        - attribute: entityId
-          present: true
-      tags:
-        aws.Arn:
-        # Used in AWSLAMBDAFUNCTION.yml for entity relationship candidates
-        aws.lambda.FunctionName:
-        sampled:
-    # Logs received via Lambda/Firehose log forwarder and enriched by the Logs Pipeline. See: https://docs.newrelic.com/docs/logs/logs-context/aws-logs-in-context/
-    # Logs from Metrics Streams or API Polling entities using the ARN to compute the entity.guid, or entities only sending logs
-    - ruleName: infra_awslambdafunction_aws_Arn
-      identifier: aws.Arn
-      name: aws.lambda.FunctionName
-      encodeIdentifierInGUID: true
-      legacyFeatures:
-        overrideGuidType: true
-      conditions:
-        - attribute: eventType
-          prefix: Log
-        - attribute: aws.Arn
-          present: true
-        - attribute: aws.lambda.FunctionName
-          present: true
-        - attribute: entityId
-          present: false
-      tags:
-        aws.Arn:
-        # Used in AWSLAMBDAFUNCTION.yml for entity relationship candidates
-        aws.lambda.FunctionName:
-        sampled:
+  - identifier: entityId
+    name: displayName
+    encodeIdentifierInGUID: true
+    conditions:
+    - attribute: provider.name
+      value: LambdaFunction
+    tags:
+      aws.accountId:
+      aws.region:
+      aws.arn:
+      aws.functionName:
+        entityTagNames: [functionName]
+      aws.runtime:
+        entityTagNames: [runtime]
+      aws.memorySize:
+        entityTagNames: [memorySize]
+      aws.timeout:
+        entityTagNames: [timeout]
+      label.*:
 
-ownership:
-  primaryOwner:
-    teamName: "no owner"
+configuration:
+  entityExpirationTime: EIGHT_DAYS
+  alertable: true
