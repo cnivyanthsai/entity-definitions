@@ -1,13 +1,26 @@
 domain: INFRA
 type: AWSAPIGATEWAYAPI
-goldenTags:
-- aws.accountId
-- aws.region
-- aws.availabilityZone
-configuration:
-  entityExpirationTime: DAILY
-  alertable: true
 
-ownership:
-  primaryOwner:
-    teamName: "no owner"
+synthesis:
+  rules:
+  - identifier: entityId
+    name: displayName
+    encodeIdentifierInGUID: true
+    conditions:
+    - attribute: provider.name
+      value: ApiGatewayApi
+    tags:
+      aws.accountId:
+      aws.region:
+      aws.arn:
+      aws.apiId:
+        entityTagNames: [apiId]
+      aws.apiName:
+        entityTagNames: [apiName]
+      aws.apiType:
+        entityTagNames: [apiType]
+      label.*:
+
+configuration:
+  entityExpirationTime: EIGHT_DAYS
+  alertable: true
