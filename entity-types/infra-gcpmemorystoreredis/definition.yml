@@ -1,0 +1,32 @@
+domain: INFRA
+type: GCPMEMORYSTOREREDIS
+
+synthesis:
+  rules:
+  - identifier: entityId
+    name: displayName
+    encodeIdentifierInGUID: true
+    conditions:
+    - attribute: eventType
+      value: GcpMemorystoreRedisSample
+    - attribute: provider
+      value: GcpMemorystoreRedis
+    tags:
+      gcp.projectId:
+      gcp.location:
+      gcp.instanceId:
+      gcp.nodeId:
+      label.*:
+
+configuration:
+  entityExpirationTime: DAILY
+  alertable: true
+
+goldenTags:
+- gcp.projectId
+- gcp.location
+- gcp.instanceId
+
+ownership:
+  primaryOwner:
+    teamName: "Cloud Integrations"
