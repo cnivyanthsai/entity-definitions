@@ -1,0 +1,32 @@
+domain: INFRA
+type: AZURECONTAINERAPPS
+
+synthesis:
+  rules:
+  - identifier: entityId
+    name: displayName
+    encodeIdentifierInGUID: true
+    conditions:
+    - attribute: eventType
+      value: AzureContainerAppsSample
+    - attribute: provider
+      value: AzureContainerApps
+    tags:
+      azure.resourceGroup:
+      azure.subscriptionId:
+      azure.region:
+      azure.resourceId:
+      label.*:
+
+configuration:
+  entityExpirationTime: DAILY
+  alertable: true
+
+goldenTags:
+- azure.resourceGroup
+- azure.subscriptionId
+- azure.region
+
+ownership:
+  primaryOwner:
+    teamName: "Cloud Integrations"
