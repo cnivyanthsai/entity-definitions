@@ -1,0 +1,45 @@
+{
+  "name": "GCP API Gateway",
+  "pages": [
+    {
+      "name": "GCP API Gateway",
+      "widgets": [
+        {
+          "title": "Request Count",
+          "nrql": "SELECT sum(gcp.apigateway.gateway.request_count) as 'Requests' FROM Metric WHERE entity.guid = '{{entity.id}}' TIMESERIES AUTO",
+          "visualization": "viz.line",
+          "rawConfiguration": {
+            "legend": { "enabled": true },
+            "yAxisLeft": { "zero": true }
+          }
+        },
+        {
+          "title": "Response Latency (ms)",
+          "nrql": "SELECT average(gcp.apigateway.gateway.response_latencies) as 'Latency (ms)' FROM Metric WHERE entity.guid = '{{entity.id}}' TIMESERIES AUTO",
+          "visualization": "viz.line",
+          "rawConfiguration": {
+            "legend": { "enabled": true },
+            "yAxisLeft": { "zero": true }
+          }
+        },
+        {
+          "title": "Error Rate",
+          "nrql": "SELECT 100 * filter(sum(gcp.apigateway.gateway.request_count), WHERE response_code_class = '5xx') / sum(gcp.apigateway.gateway.request_count) as 'Error Rate %' FROM Metric WHERE entity.guid = '{{entity.id}}' TIMESERIES AUTO",
+          "visualization": "viz.line",
+          "rawConfiguration": {
+            "legend": { "enabled": true },
+            "yAxisLeft": { "zero": true }
+          }
+        },
+        {
+          "title": "Response Code Distribution",
+          "nrql": "SELECT sum(gcp.apigateway.gateway.request_count) as 'Requests' FROM Metric WHERE entity.guid = '{{entity.id}}' FACET response_code_class TIMESERIES AUTO",
+          "visualization": "viz.line",
+          "rawConfiguration": {
+            "legend": { "enabled": true }
+          }
+        }
+      ]
+    }
+  ]
+}
