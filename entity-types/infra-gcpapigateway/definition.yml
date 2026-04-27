@@ -1,0 +1,35 @@
+domain: INFRA
+type: GCPAPIGATEWAY
+
+synthesis:
+  rules:
+  - identifier: gateway_id
+    name: gateway_id
+    encodeIdentifierInGUID: true
+    conditions:
+    - attribute: metricName
+      prefix: gcp.apigateway.gateway.
+    tags:
+      gcp.projectId:
+        entityTagNames:
+        - gcp.projectId
+      gcp.region:
+        entityTagNames:
+        - gcp.region
+      location:
+        entityTagNames:
+        - location
+      project_id:
+        entityTagNames:
+        - project_id
+      gateway_id:
+        entityTagNames:
+        - gateway_id
+
+goldenTags:
+- gcp.projectId
+- gcp.region
+
+configuration:
+  entityExpirationTime: DAILY
+  alertable: true
