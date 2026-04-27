@@ -1,0 +1,32 @@
+providerAccountName:
+  tag:
+    key: providerAccountName
+  title: Provider account
+  unit: STRING
+
+gcpProjectId:
+  tag:
+    key: gcp.projectId
+  title: GCP project
+  unit: STRING
+
+gcpRegion:
+  tag:
+    key: gcp.region
+  title: Region
+  unit: STRING
+
+requestCount:
+  goldenMetric: requestCount
+  unit: COUNT
+  title: Request count
+
+responseLatency:
+  goldenMetric: responseLatency
+  unit: MS
+  title: Response latency
+
+errorRate:
+  goldenMetric: errorRate
+  unit: PERCENTAGE
+  title: Error rate

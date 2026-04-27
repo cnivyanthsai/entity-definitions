@@ -1,0 +1,62 @@
+{
+  "name": "GCP API Gateway",
+  "pages": [
+    {
+      "name": "GCP API Gateway",
+      "widgets": [
+        {
+          "title": "Request Count",
+          "visualization": { "id": "viz.line" },
+          "layout": { "row": 1, "column": 1, "width": 4, "height": 3 },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT sum(gcp.apigateway.gateway.request_count) as 'Requests' FROM Metric WHERE entity.guid = '{{entity.id}}' TIMESERIES AUTO"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Response Latency (ms)",
+          "visualization": { "id": "viz.line" },
+          "layout": { "row": 1, "column": 5, "width": 4, "height": 3 },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT average(gcp.apigateway.gateway.response_latencies) as 'Latency (ms)' FROM Metric WHERE entity.guid = '{{entity.id}}' TIMESERIES AUTO"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Error Rate (%)",
+          "visualization": { "id": "viz.line" },
+          "layout": { "row": 1, "column": 9, "width": 4, "height": 3 },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT 100 * filter(sum(gcp.apigateway.gateway.request_count), WHERE response_code_class = '5xx') / sum(gcp.apigateway.gateway.request_count) as 'Error Rate %' FROM Metric WHERE entity.guid = '{{entity.id}}' TIMESERIES AUTO"
+              }
+            ]
+          }
+        },
+        {
+          "title": "Response Code Distribution",
+          "visualization": { "id": "viz.line" },
+          "layout": { "row": 4, "column": 1, "width": 12, "height": 3 },
+          "rawConfiguration": {
+            "nrqlQueries": [
+              {
+                "accountId": 0,
+                "query": "SELECT sum(gcp.apigateway.gateway.request_count) as 'Requests' FROM Metric WHERE entity.guid = '{{entity.id}}' FACET response_code_class TIMESERIES AUTO"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
